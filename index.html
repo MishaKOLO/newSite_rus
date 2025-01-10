@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armor Of Tonks скачать</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            animation: slideIn 2s ease-out;
+        }
+
+        .buttons {
+            margin-top: 2rem;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #fa8072;
+            transform: scale(1.1);
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .auth-buttons button {
+            margin: 0 10px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .auth-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .floating-text {
+            animation: floating 3s infinite;
+            font-size: 1.2rem;
+        }
+
+        /* Добавляем стиль для профиля и настроек */
+        .profile {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+        }
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .settings-button {
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-buttons">
+        <button id="loginButton" onclick="location.href='login.html'">Log In</button>
+        <button id="signUpButton" onclick="location.href='signup.html'">Sign Up</button>
+    </div>
+    <div class="container">
+        <h1>Добро пожаловать на наш сайт!</h1>
+        <p class="floating-text">Мы будем выпускать обновление для игры!</p>
+        <div class="buttons">
+            <button class="button" onclick="window.open('https://t.me/ArmorOfTonks', '_blank')">Следить за новостями</button>
+            <button class="button" onclick="window.open('https://t.me/+lMCGYnphTaIyMTlk', '_blank')">Работать с нами</button>
+        </div>
+
+        <!-- Профиль, если пользователь вошёл -->
+        <div id="profile" class="profile" style="display: none;">
+            <img id="avatarImage" src="default-avatar.png" alt="Avatar">
+            <span id="username">Guest</span>
+            <button class="settings-button" onclick="location.href='settings.html'">Настройки</button>
+            <button class="settings-button" onclick="logout()">Log Out</button>
+        </div>
+    </div>
+
+    <script>
+        // Проверка на наличие аккаунта
+        if (localStorage.getItem("user")) {
+            const user = JSON.parse(localStorage.getItem("user"));
+            document.getElementById("loginButton").style.display = "none";
+            document.getElementById("signUpButton").style.display = "none";
+            document.getElementById("profile").style.display = "block";
+            document.getElementById("username").innerText = user.username;
+            document.getElementById("avatarImage").src = user.avatar || "default-avatar.png";
+        }
+
+        // Функция выхода из аккаунта
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

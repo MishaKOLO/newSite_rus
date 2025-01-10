@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .form-container {
+            text-align: center;
+            width: 300px;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:hover {
+            background-color: #fa8072;
+            transform: scale(1.1);
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #ccc;
+            color: black;
+            border: none;
+            padding: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #bbb;
+        }
+
+        .avatar-upload {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Settings</h2>
+        <div class="avatar-upload">
+            <label for="avatar">Change Avatar:</label><br>
+            <input type="file" id="avatar" accept="image/*">
+        </div>
+        <button class="button" onclick="saveSettings()">Save</button>
+        <button class="back-button" onclick="location.href='index.html'">Back</button>
+    </div>
+
+    <script>
+        // Проверка на наличие пользователя
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+            window.location.href = "index.html";
+        }
+
+        // Функция для сохранения настроек
+        function saveSettings() {
+            const avatar = document.getElementById("avatar").files[0];
+            if (avatar) {
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                    user.avatar = reader.result;
+                    localStorage.setItem("user", JSON.stringify(user));
+                    alert("Settings saved!");
+                }
+                reader.readAsDataURL(avatar);
+            }
+        }
+    </script>
+</body>
+</html>

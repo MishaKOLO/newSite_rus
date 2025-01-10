@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            animation: slideIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            color: white;
+            background-color: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            margin-top: 1rem;
+        }
+
+        .button:hover {
+            background-color: #fa8072;
+            transform: scale(1.05);
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        #signup-message {
+            color: green;
+            margin-top: 1rem;
+            font-size: 1rem;
+            visibility: hidden;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .input-error {
+            border: 1px solid red;
+            animation: shake 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Create Your Account</h1>
+        <form id="signup-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="button">Sign Up</button>
+        </form>
+        <p id="signup-message"></p>
+    </div>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Проверка на пустые поля
+            if (username === '' || password === '') {
+                document.getElementById('signup-message').style.visibility = 'visible';
+                document.getElementById('signup-message').textContent = 'Пожалуйста, заполните все поля!';
+                return;
+            }
+
+            // Получаем список всех пользователей из localStorage или создаем новый массив, если его нет
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Проверяем, есть ли уже такой пользователь
+            if (users.some(user => user.username === username)) {
+                document.getElementById('signup-message').style.visibility = 'visible';
+                document.getElementById('signup-message').textContent = 'Пользователь с таким именем уже существует.';
+                return;
+            }
+
+            // Создаем нового пользователя
+            const newUser = {
+                username: username,
+                password: password,
+                avatar: 'avatar1.png' // Дефолтный аватар
+            };
+
+            // Добавляем нового пользователя в массив
+            users.push(newUser);
+
+            // Сохраняем массив пользователей в localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Отображаем сообщение об успешной регистрации
+            document.getElementById('signup-message').style.visibility = 'visible';
+            document.getElementById('signup-message').textContent = 'Аккаунт успешно создан!';
+            setTimeout(() => location.href = 'login.html', 2000);
+        });
+    </script>
+</body>
+</html>
+

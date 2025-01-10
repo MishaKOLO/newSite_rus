@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тех.поддержка</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            animation: backgroundAnimation 10s ease infinite;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            }
+            50% {
+                background: linear-gradient(135deg, #fad0c4, #ff9a9e);
+            }
+            100% {
+                background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            }
+        }
+
+        .form-container {
+            text-align: center;
+            width: 300px;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #ccc;
+            color: black;
+            border: none;
+            padding: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #bbb;
+        }
+
+        .message-container {
+            margin-top: 20px;
+            overflow-y: scroll;
+            max-height: 400px;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            background: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .message .user {
+            font-weight: bold;
+        }
+
+        .message .content {
+            margin-top: 5px;
+        }
+
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 5px;
+            float: right;
+        }
+
+        .edit-button {
+            background-color: #ffb84d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 5px;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Тех.поддержка</h1>
+        <textarea class="input-field" rows="5" placeholder="Напишите ваше сообщение..."></textarea>
+        <button class="button" onclick="sendMessage()">Отправить</button>
+    </div>
+    <div class="message-container" id="messages">
+        <!-- Сообщения тех.поддержки будут отображаться здесь -->
+    </div>
+    <button class="back-button" onclick="window.location.href = 'index.html'">Назад</button>
+
+    <script>
+        const messages = JSON.parse(localStorage.getItem("supportMessages")) || [];
+
+        // Функция отправки сообщений
+        function sendMessage() {
+            const messageContent = document.querySelector("textarea").value;
+            if (messageContent.trim() === "") return;
+
+            const message = {
+                username: "Guest", // Здесь будет имя пользователя
+                content: messageContent,
+                id: Date.now()
+            };
+
+            messages.push(message);
+            localStorage.setItem("supportMessages", JSON.stringify(messages));
+
+            displayMessages();
+        }
+
+        // Функция отображения сообщений
+        function displayMessages() {
+            const messagesContainer = document.getElementById("messages");
+            messagesContainer.innerHTML = "";
+            messages.forEach(message => {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("message");
+
+                messageDiv.innerHTML = `
+                    <span class="user">${message.username}</span>
+                    <div class="content">${message.content}</div>
+                    <button class="delete-button" onclick="deleteMessage(${message.id})">Удалить</button>
+                    <button class="edit-button" onclick="editMessage(${message.id})">Редактировать</button>
+                `;
+                messagesContainer.appendChild(messageDiv);
+            });
+        }
+
+        // Функция удаления сообщений
+        function deleteMessage(messageId) {
+            const updatedMessages = messages.filter(message => message.id !== messageId);
+            localStorage.setItem("supportMessages", JSON.stringify(updatedMessages));
+            displayMessages();
+        }
+
+        // Функция редактирования сообщений
+        function editMessage(messageId) {
+            const newContent = prompt("Введите новый текст сообщения:");
+            if (newContent && newContent.trim() !== "") {
+                const updatedMessages = messages.map(message => {
+                    if (message.id === messageId) {
+                        message.content = newContent;
+                    }
+                    return message;
+                });
+                localStorage.setItem("supportMessages", JSON.stringify(updatedMessages));
+                displayMessages();
+            }
+        }
+
+        // Отображение сообщений при загрузке страницы
+        displayMessages();
+    </script>
+</body>
+</html>
